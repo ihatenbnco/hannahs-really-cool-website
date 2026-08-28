@@ -1,0 +1,82 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Base Viewer</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 2rem; background: #f5f5f5; }
+        .container { background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { color: #333; border-bottom: 2px solid #0066cc; padding-bottom: 0.5rem; }
+        h2 { color: #0066cc; margin-top: 1.5rem; }
+        .source { font-size: 0.9em; color: #666; font-style: italic; margin-bottom: 1rem; }
+        .code-block { background: #f8f8f8; padding: 1rem; border-left: 4px solid #0066cc; overflow-x: auto; font-family: monospace; }
+        blockquote { border-left: 4px solid #ccc; padding-left: 1rem; margin: 1rem 0; color: #555; }
+        ul { padding-left: 1.5rem; }
+        .tag { display: inline-block; background: #e0e0e0; padding: 0.2rem 0.5rem; border-radius: 3px; font-size: 0.85em; margin: 0.2rem 0.2rem 0.2rem 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📚 Document Collection</h1>
+        
+        <h2>🌐 Web Browsers (Debian Handbook)</h2>
+        <p class="source">Source: debian-handbook.md</p>
+        <p>Epiphany, the web browser in the GNOME suite, uses the WebKit display engine developed by Apple for its Safari browser. The relevant package is <code>epiphany-browser</code>.</p>
+        <p>Konqueror, available in the <code>konqueror</code> package, is KDE's web browser (but can also assume the role of a file manager). It uses the KDE-specific KHTML rendering engine.</p>
+        <p>KDE also has a newer browser called Falkon, available in the <code>falkon</code> package. It uses the QtWebEngine.</p>
+        <p>Users not satisfied by any of the above can use Firefox. This browser, available in the <code>firefox-esr</code> package, uses the Mozilla project's Gecko renderer.</p>
+
+        <h2>📖 1984 Excerpts (George Orwell)</h2>
+        <p class="source">Source: orwell1984.pdf</p>
+        <blockquote>
+            "The mutability of the past is the central tenet of Ingsoc. Past events, it is argued, have no objective existence, but survive only in written records and in human memories. The past is whatever the records and the memories agree upon."
+        </blockquote>
+        <blockquote>
+            "Who controls the past controls the future. Who controls the present controls the past."
+        </blockquote>
+        <p><span class="tag">Newspeak</span><span class="tag">Ingsoc</span><span class="tag">Doublethink</span><span class="tag">Thoughtcrime</span></p>
+
+        <h2>🔧 Batch Processing Script</h2>
+        <p class="source">Source: batch_process.py</p>
+        <div class="code-block">
+<pre>import os
+import shutil
+import re
+from pathlib import Path
+from urllib.parse import urlparse
+
+SOURCE_DIR = Path("X:\\Documents\\Reading\\Clippings")
+TARGET_BASE = Path("X:/DocumentReading/Websites")
+
+def extract_url_from_md(file_path):
+    """Extract a usable URL from frontmatter: try 'link:' first, then 'source:' if it's a URL."""
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+    except Exception as e:
+        print(f"❌ Cannot read {file_path.name}: {e}")
+        return None</pre>
+        </div>
+
+        <h2>🔐 Security & Monitoring</h2>
+        <p class="source">Source: debian-handbook.md</p>
+        <p><strong>logcheck</strong> can work in one of three modes:</p>
+        <ul>
+            <li><em>paranoid</em> — very verbose, recommended for firewalls</li>
+            <li><em>server</em> — default mode, recommended for most servers</li>
+            <li><em>workstation</em> — terser, filters out more messages</li>
+        </ul>
+        <p><strong>mod-security2</strong> (in the <code>libapache2-mod-security2</code> package) is the main such module. It even comes with many ready-to-use rules of its own (in the <code>modsecurity-crs</code> package).</p>
+
+        <h2>🧼 Soap Making Manual</h2>
+        <p class="source">Source: soap_making_manual.md</p>
+        <p><em>Document loaded. Content: TITER.</em></p>
+
+        <hr>
+        <p style="text-align:center;color:#666;font-size:0.9em;">Generated from uploaded knowledge base • Test output</p>
+    </div>
+</body>
+</html>
+```

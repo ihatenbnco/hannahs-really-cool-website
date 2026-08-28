@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Hub - Unified Archive</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #667eea;
+            --primary-dark: #764ba2;
+            --secondary: #f093fb;
+            --secondary-dark: #f5576c;
+            --success: #00d084;
+            --warning: #ffa502;
+            --danger: #ff3860;
+            --info: #3273dc;
+            --text-dark: #2c3e50;
+            --text-light: #7f8c8d;
+            --bg-light: #f5f7fa;
+            --bg-white: #ffffff;
+            --border: #ecf0f1;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, var(--bg-light) 0%, #c3cfe2 100%);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+        }
+        
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: var(--bg-white);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-3px);
+        }
+        
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.3rem;
+        }
+        
+        .stat-label {
+            color: var(--text-light);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .tab-button {
+            padding: 0.7rem 1.5rem;
+            border: 2px solid var(--border);
+            background: var(--bg-white);
+            color: var(--text-dark);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+        
+        .tab-button:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .tab-button.active {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .content-section {
+            display: none;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .card {
+            background: var(--bg-white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-header {
+            padding: 2rem;
+            color: white;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        
+        .card-header.poetry {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .card-header.legal {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .card-header.tech {
+            background: linear-gradient(135deg, #00d084 0%, #0aa57b 100%);
+        }
+        
+        .card-header.code {
+            background: linear-gradient(135deg, #ff6b6b 0%, #c92a2a 100%);
+        }
+        
+        .card-header.ai {
+            background: linear-gradient(135deg, #3273dc 0%, #1f6fd4 100%);
+        }
+        
+        .card-content {
+            padding: 2rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.8rem;
+        }
+        
+        .card-description {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+        
+        .card-meta {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin-top: auto;
+        }
+        
+        .tag {
+            display: inline-block;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .poem-text {
+            background: var(--bg-light);
+            padding: 1rem;
+            border-left: 3px solid var(--primary);
+            margin: 1rem 0;
+            font-style: italic;
+            color: var(--text-dark);
+            border-radius: 4px;
+        }
+        
+        .code-snippet {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            margin: 1rem 0;
+        }
+        
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .feature-list li {
+            padding: 0.6rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .feature-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+        }
+        
+        .pricing-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+        
+        .pricing-table th,
+        .pricing-table td {
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .pricing-table th {
+            background: var(--bg-light);
+            font-weight: 600;
+        }
+        
+        .button {
+            display: inline-block;
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+        
+        .button-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+        
+        .button-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .button-secondary {
+            background: var(--bg-light);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        
+        .button-secondary:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .section-divider {
+            margin: 3rem 0;
+            border-top: 2px solid var(--border);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-light);
+            border-top: 1px solid var(--border);
+            margin-top: 3rem;
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            padding: 1rem;
+            border-left: 4px solid var(--warning);
+            border-radius: 4px;
+            margin: 1rem 0;
+        }
+        
+        .comparison-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .comparison-item {
+            padding: 1rem;
+            background: var(--bg-light);
+            border-radius: 6px;
+        }
+        
+        .comparison-item strong {
+            color: var(--primary);
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .comparison-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 0.3rem 0.7rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+        
+        .badge-poetry {
+            background: #e8e4f3;
+            color: #667eea;
+        }
+        
+        .badge-tech {
+            background: #d4f8e8;
+            color: #00d084;
+        }
+        
+        .badge-ai {
+            background: #d0e8f7;
+            color: #3273dc;
+        }
+        
+        .badge-code {
+            background: #ffe8e8;
+            color: #ff6b6b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Knowledge Hub</h1>
+            <p>Unified archive of poetry, legal documents, technical guides, and AI resources</p>
+        </header>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">8</div>
+                <div class="stat-label">Poems</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">25</div>
+                <div class="stat-label">Legal Pages</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">4</div>
+                <div class="stat-label">Tech Guides</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">1</div>
+                <div class="stat-label">Python Script</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">1</div>
+                <div class="stat-label">AI Guide</div>
+            </div>
+        </div>
+        
+        <div class="nav-tabs">
+            <button class="tab-button active" onclick="showTab('all')">🏠 All</button>
+            <button class="tab-button" onclick="showTab('poetry')">✨ Poetry</button>
+            <button class="tab-button" onclick="showTab('legal')">⚖️ Legal</button>
+            <button class="tab-button" onclick="showTab('tech')">🔧 Technical</button>
+            <button class="tab-button" onclick="showTab('code')">💻 Code</button>
+            <button class="tab-button" onclick="showTab('ai')">🤖 AI & LLMs</button>
+        </div>
+        
+        <!-- ALL CONTENT -->
+        <div id="all" class="content-section active">
+            <div class="category-grid">
+                <!-- Poetry Card -->
+                <div class="card">
+                    <div class="card-header poetry">📖 Poetry Collection</div>
+                    <div class="card-content">
+                        <h3 class="card-title">Creative Verse & Haiku</h3>
+                        <p class="card-description">A curated collection of 8 poems including haikus, alliterations, and onomatopoeia. Topics range from food to nature to technology.</p>
+                        <div class="poem-text">
+                            "I eat potatos<br>
+                            They are not good for my heart<br>
+                            they are so so yuck"
+                        </div>
+                        <div class="card-meta">
+                            <span class="tag">8 Poems</span>
+                            <span class="tag">Haiku</span>
+                            <span class="tag">Creative</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Legal Card -->
+                <div class="card">
+                    <div class="card-header legal">⚖️ Court Brief</div>
+                    <div class="card-content">
+                        <h3 class="card-title">Aaron v. Bondi (2026)</h3>
+                        <p class="card-description">25-page defendants' reply brief filed in US District Court for the District of Columbia. Case no. 1:25-cv-04250-DFL</p>
+                        <ul class="feature-list">
+                            <li>First Amendment Coercion Claims</li>
+                            <li>Platform Content Moderation</li>
+                            <li>Government Retaliation Analysis</li>
+                            <li>Standing & Injunctive Relief</li>
+                        </ul>
+                        <div class="card-meta">
+                            <span class="tag">25 Pages</span>
+                            <span class="tag">Legal</span>
+                            <span class="tag">2026</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Ollama Guide -->
+                <div class="card">
+                    <div class="card-header tech">🔐 Ollama + Nginx</div>
+                    <div class="card-content">
+                        <h3 class="card-title">Securing Local LLM Deployment</h3>
+                        <p class="card-description">Complete guide to securing Ollama with Nginx reverse proxy using HTTP Basic Auth or Bearer Token authentication via Docker Compose.</p>
+                        <ul class="feature-list">
+                            <li>HTTP Basic Authentication Setup</li>
+                            <li>Bearer Token (API Key) Auth</li>
+                            <li>Docker Compose Deployment</li>
+                            <li>User Management & Testing</li>
+                        </ul>
+                        <div class="card-meta">
+                            <span class="tag">Docker</span>
+                            <span class="tag">Security</span>
+                            <span class="tag">LLM</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Hetzner vs Vast.ai -->
+                <div class="card">
+                    <div class="card-header tech">☁️ Cloud Comparison</div>
+                    <div class="card-content">
+                        <h3 class="card-title">Hetzner vs Vast.ai</h3>
+                        <p class="card-description">Detailed comparison of cloud infrastructure providers: pricing, GPU fleet, services, and company details. Hetzner VPS from $5.23/mo, Vast.ai from $0.02/hr.</p>
+                        <ul class="feature-list">
+                            <li>VPS & GPU Pricing</li>
+                            <li>51 GPU Models Available</li>
+                            <li>Storage & Bandwidth Costs</li>
+                            <li>Service Comparison</li>
+                        </ul>
+                        <div class="card-meta">
+                            <span class="tag">Cloud</span>
+                            <span class="tag">GPU</span>
+                            <span class="tag">Pricing</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Batch Process -->
+                <div class="card">
+                    <div class="card-header code">🐍 Python Utility</div>
+                    <div class="card-content">
+                        <h3 class="card-title">Batch Process Script</h3>
+                        <p class="card-description">Python script for organizing markdown files by domain. Extracts URLs from frontmatter, creates domain-based directory structure, and moves files automatically.</p>
+                        <ul class="feature-list">
+                            <li>URL Extraction (YAML frontmatter)</li>
+                            <li>Domain Parsing & Organization</li>
+                            <li>Automatic File Movement</li>
+                            <li>Error Handling</li>
+                        </ul>
+                        <div class="card-meta">
+                            <span class="tag">Python 3</span>
+                            <span class="tag">Automation</span>
+                            <span class="tag">File Management</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- LLM Guide -->
+                <div class="card">
+                    <div class="card-header ai">🤖 AI Model Selection</div>
+                    <div class="card-content">
+                        <h3 class="card-title">How to Choose an LLM in 2026</h3>
+                        <p class="card-description">Comprehensive framework for selecting the right language model. Compares Claude Opus 4.6, Gemini 3.1 Pro, GPT-5.4, DeepSeek by use case and budget.</p>
+                        <ul class="feature-list">
+                            <li>Use Case Matching Guide</li>
+                            <li>Pricing Tiers & ROI</li>
+                            <li>Benchmark Comparisons</li>
+                            <li>Open Source vs Proprietary</li>
+                        </ul>
+                        <div class="card-meta">
+                            <span class="tag">LLM</span>
+                            <span class="tag">2026</span>
+                            <span class="tag">Benchmarks</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- POETRY SECTION -->
+        <div id="poetry" class="content-section">
+            <div class="category-grid">
+                <div class="card">
+                    <div class="card-header poetry">🥔 Potato's</div>
+                    <div class="card-content">
+                        <div class="poem-text">
+                            I eat potatos<br>
+                            They are not good for my heart<br>
+                            they are so so yuck
+                        </div>
+                        <div class="card-meta">
+                            <span class="badge badge-poetry">Haiku</span>
+                            <span class="badge badge-poetry">Food</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header poetry">🐠 Discus Fish</div>
+                    <div class="card-content">
+                        <div class="poem-text">
+                            Discus fish are cool<br>
+                            They come in a lot of colours<br>
+                            They are at my house
+                        </div>
+                        <div class="card-meta">
+                            <span class="badge badge-poetry">Haiku</span>
+                            <span class="badge badge-poetry">Nature</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header poetry">🍔 Macca's</div>
+                    <div class="card-content">
+                        <div class="poem-text">
+                            I love MacDonalds<br>
+                            Maccas is so good for your health<br>
+                            Eat lots of maccas
+                        </div>
+                        <div class="card-meta">
+                            <span class="badge badge-poetry">Haiku</span>
+                            <span class="badge badge-poetry">Humorous</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header poetry">🍂 Autumn Leaves</div>
+                    <div class="card-content">
+                        <div class="poem-text">
+                            Autumn leaves are pretty<br>
+                            They come in many colours<br>
+                            They are amazingly cool
+                        </div>
+                        <div class="card-meta">
+                            <span class="badge badge-poetry">Haiku</span>
+                            <span class="badge badge-poetry">Seasons</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header poetry">Alliteration #1</div>
+                    <div class="card-content">
+                        <div class="poem-text">
+                            Intelligent Isaac has incredible iPads
+                        </div>
+                        <div class="card-meta">
+                            <span class="badge badge-poetry">Alliteration</span>
+                            <span class="badge badge-poetry">Wordplay</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header poetry">Alliteration #2</div>
+                    <div class="card-content">
+                        <div class="poem-text">
+                            Amazing aliens attack alligators
+                        </div>
+                        <div class="card-meta">
+                            <span class="badge badge-poetry">Alliteration</span>
+                            <span class="badge badge-poetry">Wordplay</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header poetry">Onomatopoeia</div>
+                    <div class="card-content">
+                        <p class="card-description">Sound representation through language</p>
+                        <div class="card-meta">
+                            <span class="badge badge-poetry">Literary Device</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- LEGAL SECTION -->
+        <div id="legal" class="content-section">
+            <div class="category-grid">
+                <div class="card">
+                    <div class="card-header legal">⚖️ Joshua Aaron v. Pamela J. Bondi</div>
+                    <div class="card-content">
+                        <h3 class="card-title">Defendants' Reply in Support of Motion to Dismiss</h3>
+                        <p class="card-description">
+                            <strong>Case Number:</strong> 1:25-cv-04250-DFL<br>
+                            <strong>Filed:</strong> April 24, 2026<br>
+                            <strong>Court:</strong> US District Court for the District of Columbia<br>
+                            <strong>Pages:</strong> 25
+                        </p>
+                        
+                        <h4 style="margin-top: 1rem; color: var(--text-dark); font-weight: 600;">Claims Analyzed:</h4>
+                        <ul class="feature-list">
+                            <li>First Amendment Coercion Claim</li>
+                            <li>First Amendment Retaliation Claim</li>
+                            <li>Government Action / Platform Moderation</li>
+                            <li>Article III Standing Requirements</li>
+                            <li>Injunctive Relief Eligibility</li>
+                        </ul>
+                        
+                        <div class="highlight">
+                            <strong>Core Argument:</strong> Plaintiffs fail to establish standing because Apple's removal of ICEBlock app is traceable to independent content moderation incentives, not government coercion.
+                        </div>
+                        
+                        <div class="card-meta">
+                            <span class="tag">First Amendment</span>
+                            <span class="tag">Civil Litigation</span>
+                            <span class="tag">2026</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- TECHNICAL SECTION -->
+        <div id="tech" class="content-section">
+            <div class="category-grid">
+                <div class="card">
+                    <div class="card-header tech">🔐 Securing Ollama with Nginx</div>
+                    <div class="card-content">
+                        <h3 class="card-title">Local LLM Deployment Security</h3>
+                        <p class="card-description">Complete Docker Compose setup for running Ollama locally with Nginx reverse proxy authentication. Two authentication approaches included.</p>
+                        
+                        <h4 style="margin: 1rem 0; color: var(--text-dark); font-weight: 600;">Two Authentication Methods:</h4>
+                        
+                        <div class="comparison-row">
+                            <div class="comparison-item">
+                                <strong>HTTP Basic Auth</strong>
+                                <p style="margin-top: 0.5rem; color: var(--text-light);">Username & password. Simple .htpasswd file management.</p>
+                            </div>
+                            <div class="comparison-item">
+                                <strong>Bearer Token Auth</strong>
+                                <p style="margin-top: 0.5rem; color: var(--text-light);">API key based. Lua script for dynamic key validation.</p>
+                            </div>
+                        </div>
+                        
+                        <h4 style="margin: 1rem 0; color: var(--text-dark); font-weight: 600;">Key Features:</h4>
+                        <ul class="feature-list">
+                            <li>Docker Compose deployment</li>
+                            <li>Ollama + Nginx integration</li>
+                            <li>Hot-reload credential management</li>
+                            <li>Timeout configuration for LLM responses</li>
+                            <li>Easy user/key management</li>
+                        </ul>
+                        
+                        <div class="card-meta">
+                            <span class="tag">Docker</span>
+                            <span class="tag">Nginx</span>
+                            <span class="tag">Security</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header tech">☁️ Hetzner vs Vast.ai</div>
+                    <div class="card-content">
+                        <h3 class="card-title">Infrastructure Provider Comparison</h3>
+                        <p class="card-description">Comprehensive analysis comparing two major cloud providers for compute and GPU resources.</p>
+                        
+                        <h4 style="margin: 1rem 0; color: var(--text-dark); font-weight: 600;">Hetzner Highlights:</h4>
+                        <ul class="feature-list">
+                            <li>Affordable VPS ($5.23-$22.70/mo)</li>
+                            <li>German company, GDPR-friendly</li>
+                            <li>6 data center locations</li>
+                            <li>Free egress (1-60 TB/mo)</li>
+                        </ul>
+                        
+                        <h4 style="margin: 1rem 0; color: var(--text-dark); font-weight: 600;">Vast.ai Highlights:</h4>
+                        <ul class="feature-list">
+                            <li>10,000+ GPU marketplace</li>
+                            <li>Starting $0.02/hr GPU rental</li>
+                            <li>51 GPU models available</li>
+                            <li>SOC2 certified security</li>
+                        </ul>
+                        
+                        <div class="card-meta">
+                            <span class="tag">Cloud</span>
+                            <span class="tag">GPU</span>
+                            <span class="tag">Pricing</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- CODE SECTION -->
+        <div id="code" class="content-section">
+            <div class="category-grid">
+                <div class="card">
+                    <div class="card-header code">🐍 Batch File Processor</div>
+                    <div class="card-content">
+                        <h3 class="card-title">Markdown Organization Script</h3>
+                        <p class="card-description">Python utility that automatically organizes markdown files by domain. Extracts URLs from YAML frontmatter, parses domains, and moves files into domain-based directory structure.</p>
+                        
+                        <h4 style="margin: 1rem 0; color: var(--text-dark); font-weight: 600;">Features:</h4>
+                        <ul class="feature-list">
+                            <li>YAML frontmatter parsing</li>
+                            <li>URL extraction (link: & source: fields)</li>
+                            <li>Domain-based directory creation</li>
+                            <li>Automatic file movement with error handling</li>
+                            <li>Console feedback on operations</li>
+                        </ul>
+                        
+                        <div class="code-snippet">
+import os<br>
+import shutil<br>
+from pathlib import Path<br>
+from urllib.parse import urlparse
+                        </div>
+                        
+                        <p style="color: var(--text-light); font-size: 0.9rem;">Scans source directory for .md files, extracts domain from frontmatter URL, creates target directories, and moves files accordingly.</p>
+                        
+                        <div class="card-meta">
+                            <span class="tag">Python 3</span>
+                            <span class="tag">File Automation</span>
+                            <span class="tag">DevOps</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- AI SECTION -->
+        <div id="ai" class="content-section">
+            <div class="category-grid">
+                <div class="card">
+                    <div class="card-header ai">🤖 How to Choose an LLM in 2026</div>
+                    <div class="card-content">
+                        <h3 class="card-title">AI Model Selection Framework</h3>
+                        <p class="card-description">Comprehensive guide to selecting the right language model based on use case, budget, and deployment requirements. Compares frontier and open-source models with benchmark data.</p>
+                        
+                        <h4 style="margin: 1rem 0; color: var(--text-dark); font-weight: 600;">Top Recommendations by Use Case:</h4>
+                        
+                        <table class="pricing-table">
+                            <tr>
+                                <th>Use Case</th>
+                                <th>Best Choice</th>
+                            </tr>
+                            <tr>
+                                <td>Coding</td>
+                                <td>Gemini 3.1 Pro (93.5)</td>
+                            </tr>
+                            <tr>
+                                <td>Math & Reasoning</td>
+                                <td>GPT-5.4 (AIME 99)</td>
+                            </tr>
+                            <tr>
+                                <td>Long Documents</td>
+                                <td>Gemini 3.1 Pro (1M context)</td>
+                            </tr>
+                            <tr>
+                                <td>Multimodal</td>
+                                <td>Gemini 3.1 Pro (MMMU 95)</td>
+                            </tr>
+                            <tr>
+                                <td>Budget Option</td>
+                                <td>DeepSeek V3 ($0.27/M)</td>
+                            </tr>
+                        </table>
+                        
+                        <h4 style="margin: 1rem 0; color: var(--text-dark); font-weight: 600;">Pricing Tiers:</h4>
+                        <ul class="feature-list">
+                            <li><strong>Budget:</strong> $0.05-0.50/M input tokens</li>
+                            <li><strong>Mid-Tier:</strong> $0.50-5/M (Best value)</li>
+                            <li><strong>Frontier:</strong> $5+/M (Peak performance)</li>
+                        </ul>
+                        
+                        <div class="highlight">
+                            <strong>Default Pick for 2026:</strong> Gemini 3.1 Pro at $2/$12 per million tokens. Strongest mainstream value with balanced performance across all categories.
+                        </div>
+                        
+                        <div class="card-meta">
+                            <span class="tag">LLM</span>
+                            <span class="tag">Benchmarks</span>
+                            <span class="tag">Cost Analysis</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section-divider"></div>
+        
+        <footer>
+            <p><strong>Knowledge Hub</strong> © 2026 — Unified archive of diverse documents and resources</p>
+            <p style="margin-top: 1rem; font-size: 0.9rem;">
+                <span style="display: inline-block; margin-right: 2rem;">📚 8 Poems</span>
+                <span style="display: inline-block; margin-right: 2rem;">⚖️ 1 Legal Brief</span>
+                <span style="display: inline-block; margin-right: 2rem;">🔧 2 Tech Guides</span>
+                <span style="display: inline-block; margin-right: 2rem;">💻 1 Python Script</span>
+                <span style="display: inline-block;">🤖 1 AI Guide</span>
+            </p>
+        </footer>
+    </div>
+    
+    <script>
+        function showTab(tabName) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active class from all buttons
+            const buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected section
+            const selectedSection = document.getElementById(tabName);
+            if (selectedSection) {
+                selectedSection.classList.add('active');
+            }
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

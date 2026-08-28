@@ -1,0 +1,273 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Knowledge Hub - Document Summary</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #34495e;
+            --accent: #3498db;
+            --bg: #f4f7f6;
+            --text: #333;
+            --card-bg: #fff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: var(--bg);
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        nav {
+            background: var(--secondary);
+            color: white;
+            padding: 0.5rem;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 1rem;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .section-title {
+            border-left: 5px solid var(--accent);
+            padding-left: 1rem;
+            margin-top: 3rem;
+            color: var(--primary);
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: var(--accent);
+        }
+
+        .tag {
+            display: inline-block;
+            background: #eee;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        ul {
+            padding-left: 1.2rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: var(--primary);
+            color: white;
+            margin-top: 4rem;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>The Knowledge Hub</h1>
+    <p>A Unified Digital Summary of Your Document Collection</p>
+</header>
+
+<nav>
+    <a href="#tech">Tech & Infrastructure</a>
+    <a href="#ai">AI & Benchmarking</a>
+    <a href="#creative">Creative & Literature</a>
+    <a href="#business">Business & Planning</a>
+</nav>
+
+<div class="container">
+
+    <section id="tech">
+        <h2 class="section-title">🖥️ Tech & Infrastructure</h2>
+
+        <div class="card">
+            <span class="tag">System Administration</span>
+            <h3>Debian Administrator's Handbook</h3>
+            <p>A massive guide covering the Debian GNU/Linux system. It details the project's history, foundation documents, and technical operations.</p>
+            <ul>
+                <li><strong>Packaging:</strong> Deep dive into binary/source package structures and <code>dpkg</code>/APT tools.</li>
+                <li><strong>Security:</strong> Configuration of services like Apache (SSL/SNI) and SELinux.</li>
+                <li><strong>Lifecycle:</strong> Strategies for maintaining stable releases and performing upgrades.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <span class="tag">Networking</span>
+            <h3>WireGuard VPN Protocol</h3>
+            <p>Research paper on the next-generation kernel network tunnel designed for high speed and security.</p>
+            <ul>
+                <li><strong>Performance:</strong> Designed to outperform IPsec and OpenVPN by running in kernel space.</li>
+                <li><strong>Crypto:</strong> Uses modern primitives like ChaCha20, Poly1305, and Curve25519.</li>
+                <li><strong>Philosophy:</strong> Prioritizes a small, auditable codebase to reduce security vulnerabilities.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <span class="tag">Security / AI Ops</span>
+            <h3>Securing Ollama with Nginx</h3>
+            <p>Technical guide for implementing a reverse proxy to protect local Large Language Model deployments.</p>
+            <ul>
+                <li><strong>Authentication:</strong> Setup for HTTP Basic Auth and Bearer Token (API Key) security.</li>
+                <li><strong>Containerization:</strong> Deployment strategy using Docker Compose to orchestrate services.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <span class="tag">Web Data</span>
+            <h3>Browser Engine Data Table</h3>
+            <p>Comprehensive technical breakdown of various web browsers and their internal engines.</p>
+            <ul>
+                <li><strong>Engines:</strong> Tracks usage of Chromium, Gecko, WebKit, and Blink.</li>
+                <li><strong>Benchmarks:</strong> Includes placeholders for Speedometer and MotionMark performance testing.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <span class="tag">Automation</span>
+            <h3>Batch Process Utility (Python)</h3>
+            <p>A script developed to automate the organization of reading clippings and markdown notes.</p>
+            <ul>
+                <li><strong>Logic:</strong> Extracts source URLs from frontmatter, parses the domain, and moves files into organized directories.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="ai">
+        <h2 class="section-title">🤖 AI & Benchmarking</h2>
+
+        <div class="card">
+            <span class="tag">Evaluation</span>
+            <h3>30 LLM Benchmarks Guide</h3>
+            <p>An overview of standardized tests used to evaluate AI performance across diverse domains.</p>
+            <ul>
+                <li><strong>Knowledge:</strong> Tests like MMLU (General) and HLE (Expert-level reasoning).</li>
+                <li><strong>Logic:</strong> HellaSwag (Commonsense) and GSM8K (Grade school math).</li>
+                <li><strong>Specialization:</strong> Coding (HumanEval), Safety (HELM), and Finance (FinBen).</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <span class="tag">Cloud Infrastructure</span>
+            <h3>Hetzner vs Vast.ai</h3>
+            <p>A comparison of cloud hosting solutions for different professional needs.</p>
+            <ul>
+                <li><strong>Hetzner:</strong> Best for high-performance, affordable VPS and EU-based GDPR compliance.</li>
+                <li><strong>Vast.ai:</strong> Best for AI/ML workloads with a fleet of over 10,000 GPUs and CUDA templates.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <span class="tag">Academic Research</span>
+            <h3>LLM Benchmark Survey</h3>
+            <p>A comprehensive academic survey categorizing AI evaluations into specialized fields like biology, IP law, and safety red-teaming.</p>
+        </div>
+    </section>
+
+    <section id="creative">
+        <h2 class="section-title">🎨 Creative & Literature</h2>
+
+        <div class="card">
+            <span class="tag">Dystopian Fiction</span>
+            <h3>Orwell's 1984: Ministry of Truth</h3>
+            <p>Excerpt regarding the Records Department, detailing the control of information, media, and history in Oceania.</p>
+        </div>
+
+        <div class="card">
+            <span class="tag">Poetry</span>
+            <h3>The Poem Book</h3>
+            <p>A collection of whimsical rhymes including "Potato's", "Discus Fish", and "Macca's", alongside exercises in alliteration and onomatopoeia.</p>
+        </div>
+
+        <div class="card">
+            <span class="tag">Music</span>
+            <h3>BEEG PLAYLIST</h3>
+            <p>A tracklist featuring Vylet Pony (ANTONYMPH, SYNDICATE), FEM&M, and Cypis.</p>
+        </div>
+
+        <div class="card">
+            <span class="tag">Classic Manuals</span>
+            <h3>Soap-Making Manual</h3>
+            <p>Historical instructional text by E. G. Thomssen covering industrial and craft methods for producing soap.</p>
+        </div>
+    </section>
+
+    <section id="business">
+        <h2 class="section-title">💼 Business & Planning</h2>
+
+        <div class="card">
+            <span class="tag">Entrepreneurship</span>
+            <h3>Yarn Store Pricing & Plan</h3>
+            <p>Business strategy for an online yarn retail operation.</p>
+            <ul>
+                <li><strong>Infrastructure:</strong> Tuta for green-energy email; Shopify Buy for transactions.</li>
+                <li><strong>Marketing:</strong> Social media outreach via Instagram, Facebook, BlueSky, and Mastodon.</li>
+            </ul>
+        </div>
+    </section>
+
+</div>
+
+<footer>
+    <p>&copy; 2026 The Knowledge Hub. Generated from personal document archives.</p>
+</footer>
+
+</body>
+</html>

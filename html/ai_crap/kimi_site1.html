@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Summary</title>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --border: #30363d;
+            --text: #c9d1d9;
+            --text-muted: #8b949e;
+            --accent: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-red: #f85149;
+            --accent-yellow: #d29922;
+            --accent-purple: #a371f7;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+        .container { max-width: 1100px; margin: 0 auto; }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(90deg, var(--accent), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 2rem;
+        }
+        .doc-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .doc-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+        .doc-header {
+            background: var(--bg-tertiary);
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+        }
+        .doc-icon {
+            width: 40px; height: 40px;
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; font-weight: bold;
+        }
+        .icon-python { background: rgba(58, 134, 255, 0.15); color: #3b82f6; }
+        .icon-md { background: rgba(163, 113, 247, 0.15); color: var(--accent-purple); }
+        .icon-pdf { background: rgba(248, 81, 73, 0.15); color: var(--accent-red); }
+        .doc-title { flex: 1; }
+        .doc-title h2 { font-size: 1.15rem; font-weight: 600; }
+        .doc-title .meta { font-size: 0.8rem; color: var(--text-muted); }
+        .doc-type {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.25rem 0.6rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        .type-script { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+        .type-guide { background: rgba(163, 113, 247, 0.15); color: #c084fc; }
+        .type-legal { background: rgba(248, 81, 73, 0.15); color: #f87171; }
+        .type-comparison { background: rgba(47, 185, 80, 0.15); color: #4ade80; }
+        .doc-body {
+            padding: 1.5rem;
+            display: none;
+        }
+        .doc-card.active .doc-body { display: block; }
+        .doc-card.active .toggle-icon { transform: rotate(180deg); }
+        .toggle-icon {
+            transition: transform 0.2s;
+            color: var(--text-muted);
+        }
+        .summary-section {
+            margin-bottom: 1.25rem;
+        }
+        .summary-section:last-child { margin-bottom: 0; }
+        .summary-section h3 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+        .summary-section p, .summary-section li {
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+        .summary-section ul {
+            padding-left: 1.25rem;
+        }
+        .summary-section li { margin-bottom: 0.35rem; }
+        code {
+            background: var(--bg-tertiary);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'SF Mono', monospace;
+            font-size: 0.85em;
+            color: var(--accent);
+        }
+        .highlight-box {
+            background: rgba(88, 166, 255, 0.08);
+            border-left: 3px solid var(--accent);
+            padding: 1rem 1.25rem;
+            border-radius: 0 6px 6px 0;
+            margin: 0.75rem 0;
+        }
+        .warning-box {
+            background: rgba(248, 81, 73, 0.08);
+            border-left: 3px solid var(--accent-red);
+            padding: 1rem 1.25rem;
+            border-radius: 0 6px 6px 0;
+            margin: 0.75rem 0;
+        }
+        .tag {
+            display: inline-block;
+            font-size: 0.75rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: 12px;
+            background: var(--bg-tertiary);
+            color: var(--text-muted);
+            margin-right: 0.4rem;
+            margin-bottom: 0.4rem;
+        }
+        .code-block {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1rem;
+            font-family: 'SF Mono', monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            margin: 0.5rem 0;
+            color: #e6edf3;
+        }
+        .key-value {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            margin-bottom: 0.4rem;
+        }
+        .key-value .key { color: var(--text-muted); }
+        .key-value .value { color: var(--text); }
+        .legal-party {
+            background: var(--bg-tertiary);
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+        }
+        .legal-party .role {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--accent);
+            font-weight: 600;
+        }
+        .legal-party .name {
+            font-size: 0.95rem;
+            margin-top: 0.2rem;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        .comparison-table th, .comparison-table td {
+            padding: 0.6rem 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        .comparison-table th {
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+        .comparison-table tr:hover td {
+            background: rgba(255,255,255,0.02);
+        }
+        .price { color: var(--accent-green); font-weight: 600; }
+        .footer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+        .claim-box {
+            background: var(--bg-tertiary);
+            border-radius: 6px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+        }
+        .claim-box .claim-num {
+            color: var(--accent-yellow);
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        .timeline {
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0.35rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -1.25rem;
+            top: 0.4rem;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+        .timeline-item .date {
+            font-size: 0.8rem;
+            color: var(--accent);
+            font-weight: 600;
+        }
+        .timeline-item .event {
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Document Summary</h1>
+        <p class="subtitle">Four uploaded files summarized and organized for quick reference</p>
+
+        <!-- File 1: batch_process.py -->
+        <div class="doc-card" onclick="this.classList.toggle('active')">
+            <div class="doc-header">
+                <div class="doc-icon icon-python">Py</div>
+                <div class="doc-title">
+                    <h2>batch_process.py</h2>
+                    <div class="meta">Python script | File organizer for markdown clippings</div>
+                </div>
+                <span class="doc-type type-script">Script</span>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="doc-body">
+                <div class="summary-section">
+                    <h3>Purpose</h3>
+                    <p>A Python utility that automatically organizes markdown files containing web clippings by extracting their source URL and sorting them into domain-based folders.</p>
+                </div>
+                <div class="summary-section">
+                    <h3>How It Works</h3>
+                    <ul>
+                        <li>Scans <code>X:\Documents\Reading\Clippings</code> for <code>*.md</code> files</li>
+                        <li>Extracts URLs from YAML frontmatter (checks <code>link:</code> first, then <code>source:</code>)</li>
+                        <li>Parses the domain from each URL (strips <code>www.</code> prefix)</li>
+                        <li>Moves files to <code>X:/DocumentReading\Websites\&lt;domain&gt;/</code></li>
+                    </ul>
+                </div>
+                <div class="summary-section">
+                    <h3>Key Functions</h3>
+                    <div class="key-value"><span class="key">extract_url_from_md()</span><span class="value">Parses frontmatter to find a valid HTTP(S) URL</span></div>
+                    <div class="key-value"><span class="key">get_domain_from_url()</span><span class="value">Uses urllib to extract netloc and clean it</span></div>
+                    <div class="key-value"><span class="key">main()</span><span class="value">Orchestrates the directory scan and file moves</span></div>
+                </div>
+                <div class="summary-section">
+                    <h3>Dependencies</h3>
+                    <p><code>os</code>, <code>shutil</code>, <code>re</code>, <code>pathlib.Path</code>, <code>urllib.parse.urlparse</code></p>
+                </div>
+                <div class="highlight-box">
+                    <strong>Note:</strong> Paths use mixed separators (<code>\</code> and <code>/</code>) which works on Windows but may need adjustment for cross-platform use.
+                </div>
+            </div>
+        </div>
+
+        <!-- File 2: Securing Ollama with Nginx -->
+        <div class="doc-card" onclick="this.classList.toggle('active')">
+            <div class="doc-header">
+                <div class="doc-icon icon-md">Md</div>
+                <div class="doc-title">
+                    <h2>Securing Ollama with an Nginx Reverse Proxy</h2>
+                    <div class="meta">Technical guide | Docker Compose setup</div>
+                </div>
+                <span class="doc-type type-guide">Guide</span>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="doc-body">
+                <div class="summary-section">
+                    <h3>Overview</h3>
+                    <p>A step-by-step guide for adding authentication to a local Ollama LLM deployment using Nginx as a reverse proxy, deployed via Docker Compose. Covers two authentication methods.</p>
+                </div>
+                <div class="summary-section">
+                    <h3>Approach 1: HTTP Basic Authentication</h3>
+                    <ul>
+                        <li>Uses <code>.htpasswd</code> file with bcrypt-hashed credentials</li>
+                        <li>Nginx config: <code>auth_basic</code> + <code>auth_basic_user_file</code></li>
+                        <li>Compose file: <code>docker-compose.basic.yml</code></li>
+                        <li>Port mapping: <code>8880:80</code></li>
+                        <li>Test with: <code>curl -u myuser:mypassword</code></li>
+                    </ul>
+                    <div class="code-block">docker run --rm -it httpd:alpine htpasswd -nb myuser mypassword > ./nginx/.htpasswd</div>
+                </div>
+                <div class="summary-section">
+                    <h3>Approach 2: Bearer Token (API Key)</h3>
+                    <ul>
+                        <li>Uses <code>api_keys.txt</code> file with one key per line</li>
+                        <li>Nginx config uses Lua script (<code>access_by_lua_block</code>) for dynamic key validation</li>
+                        <li>Requires <code>openresty/openresty</code> image (includes Lua module)</li>
+                        <li>Compose file: <code>docker-compose.bearer.yml</code></li>
+                        <li>Keys are read from file on every request — changes take effect immediately</li>
+                    </ul>
+                    <div class="code-block">curl -H "Authorization: Bearer my-secret-api-key-1" http://localhost:8880/api/generate</div>
+                </div>
+                <div class="summary-section">
+                    <h3>Key Configuration Details</h3>
+                    <ul>
+                        <li>Proxy timeouts set to <code>300s</code> to prevent 504 errors on slow model responses</li>
+                        <li>Ollama data persisted via Docker volume <code>ollama_data</code></li>
+                        <li>Both services use <code>restart: unless-stopped</code></li>
+                        <li>Config files mounted read-only (<code>:ro</code>)</li>
+                    </ul>
+                </div>
+                <div class="warning-box">
+                    <strong>Security Warning:</strong> The guide strongly recommends adding HTTPS before production use, as Basic Auth and Bearer tokens are sent in plaintext over HTTP.
+                </div>
+                <div class="summary-section">
+                    <h3>Tags</h3>
+                    <span class="tag">Ollama</span>
+                    <span class="tag">Nginx</span>
+                    <span class="tag">Docker Compose</span>
+                    <span class="tag">Authentication</span>
+                    <span class="tag">Reverse Proxy</span>
+                    <span class="tag">LLM</span>
+                    <span class="tag">Lua</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- File 3: Hetzner vs Vast.ai -->
+        <div class="doc-card" onclick="this.classList.toggle('active')">
+            <div class="doc-header">
+                <div class="doc-icon icon-md">Md</div>
+                <div class="doc-title">
+                    <h2>Hetzner vs Vast.ai</h2>
+                    <div class="meta">Cloud provider comparison | Pricing & features</div>
+                </div>
+                <span class="doc-type type-comparison">Comparison</span>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="doc-body">
+                <div class="summary-section">
+                    <h3>Overview</h3>
+                    <p>A feature and pricing comparison between Hetzner (German VPS/hosting provider) and Vast.ai (GPU marketplace), published by getdeploying.com.</p>
+                </div>
+                <div class="summary-section">
+                    <h3>Hetzner Highlights</h3>
+                    <ul>
+                        <li>High-performance VPS at affordable prices (shared, high-memory, dedicated CPU)</li>
+                        <li>Developer tooling: Terraform SDKs, official CLI</li>
+                        <li>EU-based — may simplify GDPR compliance</li>
+                        <li>Founded 1997, headquartered in Germany, 6 data center locations</li>
+                        <li>GPU starting price: <strong class="price">$0.34/hr</strong></li>
+                        <li>Offers 2 GPU models: RTX 6000 Ada, RTX 4000 Ada</li>
+                    </ul>
+                </div>
+                <div class="summary-section">
+                    <h3>Vast.ai Highlights</h3>
+                    <ul>
+                        <li>Marketplace with 10,000+ GPUs available</li>
+                        <li>SOC2 certified (enterprise security)</li>
+                        <li>Pre-built templates: PyTorch, CUDA, TensorFlow</li>
+                        <li>Founded 2018, headquartered in USA</li>
+                        <li>GPU starting price: <strong class="price">$0.02/hr</strong></li>
+                        <li>Offers 51 GPU models</li>
+                        <li>Billing: per second; components: active rental, storage, bandwidth</li>
+                    </ul>
+                </div>
+                <div class="summary-section">
+                    <h3>Price Comparison (Hetzner)</h3>
+                    <table class="comparison-table">
+                        <tr><th>Service</th><th>Price</th><th>Specs</th></tr>
+                        <tr><td>VM Small</td><td class="price">$5.23/mo</td><td>2 vCPU, 4 GB RAM (CPX11)</td></tr>
+                        <tr><td>VM Medium</td><td class="price">$12.22/mo</td><td>4 vCPU, 8 GB RAM (CPX32)</td></tr>
+                        <tr><td>VM Large</td><td class="price">$22.70/mo</td><td>8 vCPU, 16 GB RAM (CPX42)</td></tr>
+                        <tr><td>Block Storage</td><td class="price">$5.13/mo</td><td>100 GB</td></tr>
+                        <tr><td>Object Storage</td><td class="price">$5.82/mo</td><td>1 TB</td></tr>
+                        <tr><td>Load Balancer</td><td class="price">$6.28/mo</td><td>LB11</td></tr>
+                        <tr><td>Egress Overage</td><td class="price">$1.16/TB</td><td>Beyond 1-60 TB allowance</td></tr>
+                    </table>
+                    <p style="margin-top:0.5rem; font-size:0.85rem; color:var(--text-muted);">Vast.ai does not offer traditional VPS/block storage/load balancer services — it is GPU-focused only.</p>
+                </div>
+                <div class="summary-section">
+                    <h3>Services Offered</h3>
+                    <table class="comparison-table">
+                        <tr><th>Service</th><th>Hetzner</th><th>Vast.ai</th></tr>
+                        <tr><td>Block Storage</td><td>✓</td><td>—</td></tr>
+                        <tr><td>GPU-powered Servers</td><td>✓</td><td>✓</td></tr>
+                        <tr><td>Load Balancer</td><td>✓</td><td>—</td></tr>
+                        <tr><td>Object Storage</td><td>✓</td><td>—</td></tr>
+                        <tr><td>VPS</td><td>✓</td><td>—</td></tr>
+                    </table>
+                </div>
+                <div class="summary-section">
+                    <h3>Key Takeaway</h3>
+                    <p>Hetzner is a full-service cloud provider with strong European presence and competitive VPS pricing. Vast.ai is a specialized GPU marketplace with dramatically lower GPU prices but no general compute/storage services.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- File 4: ICEBlock Complaint -->
+        <div class="doc-card" onclick="this.classList.toggle('active')">
+            <div class="doc-header">
+                <div class="doc-icon icon-pdf">PDF</div>
+                <div class="doc-title">
+                    <h2>Complaint — Aaron v. Bondi et al.</h2>
+                    <div class="meta">Federal lawsuit | First Amendment / App Store censorship</div>
+                </div>
+                <span class="doc-type type-legal">Legal</span>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="doc-body">
+                <div class="summary-section">
+                    <h3>Case Information</h3>
+                    <div class="key-value"><span class="key">Court</span><span class="value">U.S. District Court, D.D.C.</span></div>
+                    <div class="key-value"><span class="key">Case No.</span><span class="value">25-CV-4250</span></div>
+                    <div class="key-value"><span class="key">Filed</span><span class="value">December 8, 2025</span></div>
+                    <div class="key-value"><span class="key">Jury</span><span class="value">Demanded</span></div>
+                </div>
+                <div class="summary-section">
+                    <h3>Parties</h3>
+                    <div class="legal-party">
+                        <div class="role">Plaintiffs</div>
+                        <div class="name"><strong>Joshua Aaron Feinstein</strong> — software developer, founder of ICEBlock app</div>
+                        <div class="name"><strong>ALL U Chart, Inc.</strong> — Texas S-corp, owner of ICEBlock IP</div>
+                    </div>
+                    <div class="legal-party">
+                        <div class="role">Defendants (sued in official capacity)</div>
+                        <div class="name"><strong>Pamela J. Bondi</strong> — Attorney General, DOJ</div>
+                        <div class="name"><strong>Kristi L.A. Noem</strong> — Secretary, DHS</div>
+                        <div class="name"><strong>Todd M. Lyons</strong> — Acting Director, ICE</div>
+                        <div class="name"><strong>Thomas D. Homan</strong> — White House "Border Czar"</div>
+                        <div class="name"><strong>John Doe Federal Officials 1–10</strong></div>
+                    </div>
+                </div>
+                <div class="summary-section">
+                    <h3>What Is ICEBlock?</h3>
+                    <p>A free iPhone app (launched April 2025) that allows users to report publicly observable ICE agent locations via a simple map interface. Key features:</p>
+                    <ul>
+                        <li>No accounts, no personal data collection, completely anonymous</li>
+                        <li>5-mile radius for reports and notifications</li>
+                        <li>Reports expire after 4 hours; no historical tracking</li>
+                        <li>Real address verification via reverse geocoding</li>
+                        <li>5-minute cooldown between reports to prevent spam</li>
+                        <li>Disclaimer: "for information and notification purposes only" — not for inciting violence</li>
+                        <li>No photos, videos, chat, or direct user communication</li>
+                    </ul>
+                </div>
+                <div class="summary-section">
+                    <h3>Timeline of Events</h3>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="date">April 2025</div>
+                            <div class="event">ICEBlock approved by Apple after ~5-month review including legal team vetting</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="date">Late June 2025</div>
+                            <div class="event">App reaches ~20,000 users amid increasing ICE raids</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="date">June 30, 2025</div>
+                            <div class="event">CNN features ICEBlock; app surges to #1 Social Networking and 500K+ downloads</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="date">June 30, 2025</div>
+                            <div class="event">Administration officials (Lyons, Homan, Noem, Bondi) publicly threaten prosecution and demand DOJ investigate</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="date">October 2, 2025</div>
+                            <div class="event">Apple removes ICEBlock from App Store citing "information from law enforcement"; Bondi claims credit on Fox News</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="date">October 7, 2025</div>
+                            <div class="event">Bondi testifies before Senate Judiciary Committee: "We spoke with Apple and Google to get the ICEBlock app taken down"</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="date">December 8, 2025</div>
+                            <div class="event">Complaint filed in D.D.C.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="summary-section">
+                    <h3>Claims for Relief</h3>
+                    <div class="claim-box">
+                        <div class="claim-num">FIRST CLAIM — Coercion of Private Censorship</div>
+                        <p>Defendants violated the First Amendment by coercing Apple to remove ICEBlock from the App Store, constituting a "scheme of state censorship" and unconstitutional prior restraint.</p>
+                    </div>
+                    <div class="claim-box">
+                        <div class="claim-num">SECOND CLAIM — Threatened Prosecution for Protected Speech</div>
+                        <p>Defendants violated the First Amendment by threatening criminal prosecution against Aaron for developing, distributing, and promoting ICEBlock, chilling protected expressive activity.</p>
+                    </div>
+                </div>
+                <div class="summary-section">
+                    <h3>Requested Relief</h3>
+                    <ul>
+                        <li>Declaratory judgment that coercing Apple to remove ICEBlock violates the First Amendment</li>
+                        <li>Declaratory judgment that threats to prosecute Aaron violate the First Amendment</li>
+                        <li>Permanent injunction against coercing app distributors to stop distributing ICEBlock</li>
+                        <li>Permanent injunction against threatening, investigating, or prosecuting Aaron for protected speech</li>
+                        <li>Costs, attorney's fees, and other relief</li>
+                    </ul>
+                </div>
+                <div class="warning-box">
+                    <strong>Context:</strong> The complaint alleges this is the first known instance of Apple removing a U.S.-based app in response to U.S. government demands, contrasting with 1,700+ removals for foreign governments in 2024.
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            Generated summary · 4 documents · May 2026
+        </div>
+    </div>
+
+    <script>
+        // Open the first card by default
+        document.querySelector('.doc-card').classList.add('active');
+    </script>
+</body>
+</html>

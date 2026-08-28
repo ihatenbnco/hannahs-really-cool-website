@@ -1,0 +1,18 @@
+/* I know its mediocre, I might fix it sometime, still trying to figure out what to do in general with this website */
+body {
+  background-color: #0a0a0a;
+  color: #d4d4d4;       
+  font-family: sans-serif;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  line-height: 1.6;      
+}
+
+h1 {
+  color: #9932cc;      
+}
+
+p {
+  color: #f0ffff;
+}

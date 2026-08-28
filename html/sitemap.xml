@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/css" href="https://www.xml-sitemaps.com/css/sitemap.css"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:fo="http://www.w3.org/1999/XSL/Format"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
+
+<url>
+  <loc>https://hannahsreallycoolwebsite.netlify.app/</loc>
+  <lastmod>2026-07-02T00:55:46+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://hannahsreallycoolwebsite.netlify.app/software</loc>
+  <lastmod>2026-07-02T00:55:46+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://hannahsreallycoolwebsite.netlify.app/contact</loc>
+  <lastmod>2026-07-02T00:55:46+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://hannahsreallycoolwebsite.netlify.app/louis</loc>
+  <lastmod>2026-07-02T00:55:46+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://hannahsreallycoolwebsite.netlify.app/site_index</loc>
+  <lastmod>2026-07-02T00:55:46+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://hannahsreallycoolwebsite.netlify.app/javascript/eww</loc>
+  <lastmod>2026-07-02T00:55:46+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://hannahsreallycoolwebsite.netlify.app/louis_media_dump</loc>
+  <lastmod>2026-07-02T00:55:46+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://hannahsreallycoolwebsite.netlify.app/downloads</loc>
+  <lastmod>2026-07-02T00:55:46+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://hannahsreallycoolwebsite.netlify.app/games</loc>
+  <lastmod>2026-07-02T00:55:46+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://hannahsreallycoolwebsite.netlify.app/why_i_have_a_download_for_orcaslicer</loc>
+  <lastmod>2026-07-02T00:55:46+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://hannahsreallycoolwebsite.netlify.app/ai_crap/claude_site1</loc>
+  <lastmod>2026-07-02T00:55:46+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://hannahsreallycoolwebsite.netlify.app/ai_crap/deepseek_site1</loc>
+  <lastmod>2026-07-02T00:55:46+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://hannahsreallycoolwebsite.netlify.app/ai_crap/gemini_site1</loc>
+  <lastmod>2026-07-02T00:55:46+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://hannahsreallycoolwebsite.netlify.app/ai_crap/kimi_site1</loc>
+  <lastmod>2026-07-02T00:55:46+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://hannahsreallycoolwebsite.netlify.app/ai_crap/qwen_site1</loc>
+  <lastmod>2026-07-02T00:55:46+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://hannahsreallycoolwebsite.netlify.app/downloads/website_source</loc>
+  <lastmod>2026-07-02T00:55:46+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+
+</urlset>
